@@ -3,6 +3,7 @@ const { User } = require('../../models');
 
 // GET /api/users
 router.get('/', (req, res) => {
+  console.log("======================");
   //Access our User Model and run .findAll() method
   User.findAll({
     attributes: { exclude: ['password'] }
@@ -16,6 +17,7 @@ router.get('/', (req, res) => {
 
 // GET /api/users/:id
 router.get('/:id', (req, res) => {
+  console.log("======================");
   User.findOne({
     attributes: { exclude: ['password'] },
     where: {
@@ -37,6 +39,7 @@ router.get('/:id', (req, res) => {
 
 // POST /api/users
 router.post('/', (req, res) => {
+  console.log('======================');
   // expects {username: 'wwstrothe', email: 'william@gmail.com', password: 'password1234'}
   User.create({
     username: req.body.username,
@@ -51,6 +54,7 @@ router.post('/', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
+  console.log("======================");
   // expects {email: 'william@gmail.com', password: 'password1234'}
   User.findOne({
     where: {
@@ -74,6 +78,7 @@ router.post('/login', (req, res) => {
 
 // PUT /api/users/:id
 router.put('/:id', (req, res) => {
+  console.log("======================");
   // expects {username: 'wwstrothe', email: 'william@gmail.com', password: 'password1234'}
 
   // if req.body has exact key/value pairs to match the model, you can just use req.body instead
@@ -98,6 +103,7 @@ router.put('/:id', (req, res) => {
 
 // DELETE /api/users/1
 router.delete('/:id', (req, res) => {
+  console.log("======================");
   User.destroy({
     where: {
       id: req.params.id,
