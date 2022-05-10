@@ -7,35 +7,29 @@ router.get('/', (req, res) => {
   console.log('======================');
   Post.findAll({
     attributes: [
-      "id",
-      "post_url",
-      "title",
-      "created_at",
-      [
-        sequelize.literal(
-          "(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)"
-        ),
-        "vote_count",
-      ],
+      'id',
+      'post_url',
+      'title',
+      'created_at',
+      [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
     ],
-    order: [["created_at", "DESC"]],
     include: [
       {
         model: Comment,
-        attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
+        attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
         include: {
           model: User,
-          attributes: ["username"],
-        },
+          attributes: ['username']
+        }
       },
       {
         model: User,
-        attributes: ["username"],
-      },
-    ],
+        attributes: ['username']
+      }
+    ]
   })
-    .then((dbPostData) => res.json(dbPostData))
-    .catch((err) => {
+    .then(dbPostData => res.json(dbPostData))
+    .catch(err => {
       console.log(err);
       res.status(500).json(err);
     });
@@ -53,12 +47,7 @@ router.get('/:id', (req, res) => {
       "post_url",
       "title",
       "created_at",
-      [
-        sequelize.literal(
-          "(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)"
-        ),
-        "vote_count",
-      ],
+      [sequelize.literal("(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)"),"vote_count",],
     ],
     include: [
       {
@@ -107,7 +96,7 @@ router.post('/', (req, res) => {
 // Up-vote a post
 router.put("/upvote", (req, res) => {
   console.log("======================");
-  Post.upvote(req.body, { Vote })
+  Post.upvote(req.body, { Vote, Comment, User })
     .then(updatedPostData => res.json(updatedPostData))
     .catch(err => {
       console.log(err)
